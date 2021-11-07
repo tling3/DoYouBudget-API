@@ -340,4 +340,4 @@ ASALocalRun/
 healthchecksdb
 
 # Local SSMS connection string
-appsettings.json
+*appsettings.json
