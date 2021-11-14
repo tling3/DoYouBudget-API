@@ -23,6 +23,12 @@ namespace DoYouBudget.API.Controllers
         }
 
         // GET ALL api/attendance
+        /// <summary>
+        /// Gets all users
+        /// </summary>
+        /// <returns>All user records</returns>
+        /// <response code="404">Item(s) not found</response>
+        /// <response code="200">Users successfully found</response>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UsersReadDto>>> GetUsers()
         {
