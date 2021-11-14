@@ -339,5 +339,5 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-# ssms connection string
+# Local SSMS connection string
 *appsettings.json

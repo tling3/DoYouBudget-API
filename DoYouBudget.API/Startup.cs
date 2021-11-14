@@ -1,8 +1,13 @@
+using DoYouBudget.API.Data.Context;
+using DoYouBudget.API.Data.Interfaces;
+using DoYouBudget.API.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace DoYouBudget.API
 {
@@ -18,6 +23,12 @@ namespace DoYouBudget.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DoYouBudgetContext>(option => option.UseSqlServer(
+                    Configuration.GetConnectionString("DoYouBudgetConnection")));
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IUsersRepo, UsersSqlRepo>();
+
             services.AddControllers();
         }
 
