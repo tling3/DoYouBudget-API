@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace DoYouBudget.API.Controllers
 {
+    /// <summary>
+    /// Provides users data
+    /// </summary>
     [Route("api/users")]
     [Produces("application/json")]
     [ApiController]
@@ -16,6 +19,11 @@ namespace DoYouBudget.API.Controllers
         private readonly IUsersRepo _repository;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// injected repo and mapper
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="mapper"></param>
         public UsersController(IUsersRepo repository, IMapper mapper)
         {
             _repository = repository;
@@ -27,7 +35,7 @@ namespace DoYouBudget.API.Controllers
         /// Gets all users
         /// </summary>
         /// <returns>All user records</returns>
-        /// <response code="404">Item(s) not found</response>
+        /// <response code="404">Users not found</response>
         /// <response code="200">Users successfully found</response>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UsersReadDto>>> GetUsers()
