@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DoYouBudget.API</name>
+    </assembly>
+    <members>
+        <member name="M:DoYouBudget.API.Controllers.UsersController.GetUsers">
+            <summary>
+            Gets all users
+            </summary>
+            <returns>All user records</returns>
+            <response code="404">Item(s) not found</response>
+            <response code="200">Users successfully found</response>
+        </member>
+    </members>
+</doc>
