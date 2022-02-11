@@ -8,15 +8,16 @@ using System.Threading.Tasks;
 
 namespace DoYouBudget.API.Controllers
 {
+
     /// <summary>
-    /// Provides users data
+    /// Provides category data
     /// </summary>
-    [Route("api/users")]
+    [Route("api/categories")]
     [Produces("application/json")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class CategoryController : ControllerBase
     {
-        private readonly IUsersRepo _repository;
+        private readonly ICategoryRepo _repository;
         private readonly IMapper _mapper;
 
         /// <summary>
@@ -24,31 +25,29 @@ namespace DoYouBudget.API.Controllers
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
-        public UsersController(IUsersRepo repository, IMapper mapper)
+        public CategoryController(ICategoryRepo repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        // GET ALL api/attendance
+        // GET ALL api/categories
         /// <summary>
-        /// Get all users
+        /// Get all categories
         /// </summary>
-        /// <returns>All User records</returns>
-        /// <response code="404">Users not found</response>
-        /// <response code="200">Users successfully found</response>
+        /// <returns>All Category records</returns>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UsersReadDto>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<CategoryReadDto>>> GetCategories()
         {
-            IEnumerable<UsersModel> domains = await _repository.GetUsers();
+            IEnumerable<CategoryModel> domains = await _repository.GetCategories();
             if (domains == null)
                 return NotFound();
-            IEnumerable<UsersReadDto> dtos = _mapper.Map<IEnumerable<UsersReadDto>>(domains);
+            IEnumerable<CategoryReadDto> dtos = _mapper.Map<IEnumerable<CategoryReadDto>>(domains);
             return Ok(dtos);
         }
 
+
+
     }
 }
-
-
-

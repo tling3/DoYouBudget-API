@@ -11,6 +11,6 @@ namespace DoYouBudget.API.Data.Context
         }
 
         public DbSet<UsersModel> Users { get; set; }
-        public DbSet<CategoryModel> MyProperty { get; set; }
+        public DbSet<CategoryModel> Category { get; set; }
     }
 }

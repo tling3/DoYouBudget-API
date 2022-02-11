@@ -8,17 +8,18 @@ using System.Threading.Tasks;
 
 namespace DoYouBudget.API.Data.Repositories
 {
-    public class UsersSqlRepo : BaseRepo<DoYouBudgetContext>, IUsersRepo
+    public class CategoryRepo : BaseRepo<DoYouBudgetContext>, ICategoryRepo
     {
         private readonly DoYouBudgetContext _context;
-        public UsersSqlRepo(DoYouBudgetContext context) : base(context)
+
+        public CategoryRepo(DoYouBudgetContext context) : base(context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<UsersModel>> GetUsers()
+        public async Task<IEnumerable<CategoryModel>> GetCategories()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Category.ToListAsync();
         }
     }
 }

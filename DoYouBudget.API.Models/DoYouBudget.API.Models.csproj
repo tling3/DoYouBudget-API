@@ -48,6 +48,9 @@
     <Compile Include="Base\BaseDomain.cs" />
     <Compile Include="Domain\CategoryModel.cs" />
     <Compile Include="Domain\UsersModel.cs" />
+    <Compile Include="Dto\CategoryInsertDto.cs" />
+    <Compile Include="Dto\CategoryReadDto.cs" />
+    <Compile Include="Dto\CategoryUpdateDto.cs" />
     <Compile Include="Dto\UsersInsertDto.cs" />
     <Compile Include="Dto\UsersReadDto.cs" />
     <Compile Include="Dto\UsersUpdateDto.cs" />
