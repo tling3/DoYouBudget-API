@@ -24,6 +24,10 @@ namespace DoYouBudget.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// Inject Service Collection
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DoYouBudgetContext>(option => option.UseSqlServer(
@@ -31,7 +35,8 @@ namespace DoYouBudget.API
 
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddScoped<IUsersRepo, UsersSqlRepo>();
+            services.AddScoped<IUsersRepo, UsersRepo>();
+            services.AddScoped<ICategoryRepo, CategoryRepo>();
 
             var contact = new OpenApiContact()
             {
@@ -73,6 +78,11 @@ namespace DoYouBudget.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// Inject Application Builder and Web Host Environment
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

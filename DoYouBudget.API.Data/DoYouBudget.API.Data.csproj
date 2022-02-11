@@ -48,8 +48,10 @@
   <ItemGroup>
     <Compile Include="Base\BaseRepo.cs" />
     <Compile Include="Context\DoYouBudgetContext.cs" />
+    <Compile Include="Interfaces\ICategoryRepo.cs" />
     <Compile Include="Interfaces\IUsersRepo.cs" />
-    <Compile Include="Repositories\UsersSqlRepo.cs" />
+    <Compile Include="Repositories\CategoryRepo.cs" />
+    <Compile Include="Repositories\UsersRepo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
