@@ -46,7 +46,6 @@ namespace DoYouBudget.API.Controllers
             IEnumerable<UsersReadDto> dtos = _mapper.Map<IEnumerable<UsersReadDto>>(domains);
             return Ok(dtos);
         }
-
     }
 }
 
