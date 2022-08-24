@@ -33,6 +33,16 @@ namespace DoYouBudget.API
             services.AddDbContext<DoYouBudgetContext>(option => option.UseSqlServer(
                     Configuration.GetConnectionString("DoYouBudgetConnection")));
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
+
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IUsersRepo, UsersRepo>();
@@ -97,9 +107,8 @@ namespace DoYouBudget.API
             });
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
+            app.UseCors();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
