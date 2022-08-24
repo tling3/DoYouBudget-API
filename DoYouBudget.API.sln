@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoYouBudget.API", "DoYouBudget.API\DoYouBudget.API.csproj", "{C2A9516D-FA2C-40ED-9B3B-53EDF587D4DB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoYouBudget.API.Data", "DoYouBudget.API.Data\DoYouBudget.API.Data.csproj", "{F3016D9F-4ED9-47D3-91B2-1048F93D2D4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoYouBudget.API.Models", "DoYouBudget.API.Models\DoYouBudget.API.Models.csproj", "{79DA20D0-DF82-4D95-A964-F8C46637841F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{C2A9516D-FA2C-40ED-9B3B-53EDF587D4DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2A9516D-FA2C-40ED-9B3B-53EDF587D4DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2A9516D-FA2C-40ED-9B3B-53EDF587D4DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3016D9F-4ED9-47D3-91B2-1048F93D2D4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3016D9F-4ED9-47D3-91B2-1048F93D2D4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3016D9F-4ED9-47D3-91B2-1048F93D2D4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3016D9F-4ED9-47D3-91B2-1048F93D2D4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79DA20D0-DF82-4D95-A964-F8C46637841F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79DA20D0-DF82-4D95-A964-F8C46637841F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79DA20D0-DF82-4D95-A964-F8C46637841F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79DA20D0-DF82-4D95-A964-F8C46637841F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

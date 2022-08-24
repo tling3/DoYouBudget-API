@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DoYouBudget.API</name>
+    </assembly>
+    <members>
+        <member name="T:DoYouBudget.API.Controllers.CategoryController">
+            <summary>
+            Provides category data
+            </summary>
+        </member>
+        <member name="M:DoYouBudget.API.Controllers.CategoryController.#ctor(DoYouBudget.API.Data.Interfaces.ICategoryRepo,AutoMapper.IMapper)">
+            <summary>
+            Injected repo and mapper
+            </summary>
+            <param name="repository"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:DoYouBudget.API.Controllers.CategoryController.GetCategories">
+            <summary>
+            Get all Categories
+            </summary>
+            <returns>All Category records</returns>
+            <returns></returns>
+        </member>
+        <member name="M:DoYouBudget.API.Controllers.CategoryController.GetCategoryById(System.Int32)">
+            <summary>
+            Get Category record by Id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DoYouBudget.API.Controllers.UsersController">
+            <summary>
+            Provides users data
+            </summary>
+        </member>
+        <member name="M:DoYouBudget.API.Controllers.UsersController.#ctor(DoYouBudget.API.Data.Interfaces.IUsersRepo,AutoMapper.IMapper)">
+            <summary>
+            Injected repo and mapper
+            </summary>
+            <param name="repository"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:DoYouBudget.API.Controllers.UsersController.GetUsers">
+            <summary>
+            Get all users
+            </summary>
+            <returns>All User records</returns>
+            <response code="404">Users not found</response>
+            <response code="200">Users successfully found</response>
+        </member>
+        <member name="T:DoYouBudget.API.Profiles.CategoriesProfile">
+            <summary>
+            Categories Mapper Profile
+            </summary>
+        </member>
+        <member name="M:DoYouBudget.API.Profiles.CategoriesProfile.#ctor">
+            <summary>
+            Create Maps in constructor
+            </summary>
+        </member>
+        <member name="T:DoYouBudget.API.Profiles.UsersProfile">
+            <summary>
+            Users Mapper Profile
+            </summary>
+        </member>
+        <member name="M:DoYouBudget.API.Profiles.UsersProfile.#ctor">
+            <summary>
+            Create Maps in constructor
+            </summary>
+        </member>
+        <member name="M:DoYouBudget.API.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Inject Service Collection
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:DoYouBudget.API.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Inject Application Builder and Web Host Environment
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>
