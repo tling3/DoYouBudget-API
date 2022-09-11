@@ -1,4 +1,5 @@
 ﻿using DoYouBudget.API.Models.Base;
+using System;
 
 namespace DoYouBudget.API.Models.Domain
 {
@@ -8,6 +9,8 @@ namespace DoYouBudget.API.Models.Domain
         public int UserId { get; set; }
         public string Category { get; set; }
         public decimal Budget { get; set; }
+        public int TypeId { get; set; }
+        public DateTime PostDate { get; set; }
         public string ModifiedBy { get; set; }
     }
 }

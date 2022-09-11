@@ -16,6 +16,7 @@ namespace DoYouBudget.API.Profiles
         {
             CreateMap<CategoryModel, CategoryReadDto>();
             CreateMap<CategoryInsertDto, CategoryModel>();
+            CreateMap<CategoryUpdateDto, CategoryModel>();
         }
     }
 }
