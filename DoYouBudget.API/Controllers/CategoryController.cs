@@ -39,13 +39,12 @@ namespace DoYouBudget.API.Controllers
         /// <returns>All Category records</returns>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryReadDto>>> GetCategories()
+        public ActionResult<List<CategoryReadDto>> GetCategories()
         {
-            IEnumerable<CategoryModel> domains = await _repository.GetCategories();
-            if (domains == null)
+            List<CategoryReadDto> readDtos = _repository.GetCategories();
+            if (readDtos == null)
                 return NotFound();
-            IEnumerable<CategoryReadDto> dtos = _mapper.Map<IEnumerable<CategoryReadDto>>(domains);
-            return Ok(dtos);
+            return Ok(readDtos);
         }
 
         // GET api/categories/{id}
@@ -65,6 +64,12 @@ namespace DoYouBudget.API.Controllers
             return Ok(dto);
         }
 
+        // POST api/categories
+        /// <summary>
+        /// Post category
+        /// </summary>
+        /// <param name="insertDto"></param>
+        /// <returns>category</returns>
         [HttpPost]
         public async Task<ActionResult<int>> InsertCategory(CategoryInsertDto insertDto)
         {
@@ -79,5 +84,57 @@ namespace DoYouBudget.API.Controllers
             return CreatedAtRoute(nameof(GetCategoryById), new { id = readDto.Id }, readDto);
         }
 
+        /// <summary>
+        /// Update category by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updateDto"></param>
+        /// <returns></returns>
+        /// <response code="400">Updated item is not valid</response>
+        /// <response code="404">Item not found</response>
+        /// <response code="500">Item failed to be updated</response>
+        /// <response code="204">Item was successfully updated</response>
+        // PUT api/categories/
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> UpdateCategory(int id, CategoryUpdateDto updateDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            CategoryModel domain = await _repository.GetCategoryById(id);
+            if (domain == null)
+                return NotFound();
+
+            _mapper.Map(updateDto, domain);
+            _repository.UpdateCategory(domain);
+            bool isSuccessful = _repository.SaveChanges();
+            if (!isSuccessful)
+                return StatusCode(StatusCodes.Status500InternalServerError);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Delete category by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="500">Item failed to be updated</response>
+        /// <response code="204">Item was successfully updated</response>
+        // DELETE api/categories/{id}
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCategory(int id)
+        {
+            CategoryModel domain = await _repository.GetCategoryById(id);
+            if (domain == null)
+                return NotFound();
+
+            bool isSuccessful = _repository.DeleteCategory(domain);
+            if (!isSuccessful)
+                return StatusCode(StatusCodes.Status500InternalServerError);
+
+            return NoContent();
+        }
     }
 }
