@@ -48,10 +48,17 @@
     <Compile Include="Base\BaseDomain.cs" />
     <Compile Include="Domain\CategoryModel.cs" />
     <Compile Include="Domain\CategoryTypeModel.cs" />
+    <Compile Include="Domain\MonthlyLogModel.cs" />
     <Compile Include="Domain\UsersModel.cs" />
     <Compile Include="Dto\CategoryInsertDto.cs" />
     <Compile Include="Dto\CategoryReadDto.cs" />
+    <Compile Include="Dto\CategoryTypeInsertDto.cs" />
+    <Compile Include="Dto\CategoryTypeReadDto.cs" />
+    <Compile Include="Dto\CategoryTypeUpdateDto.cs" />
     <Compile Include="Dto\CategoryUpdateDto.cs" />
+    <Compile Include="Dto\MonthlyLogInsertDto.cs" />
+    <Compile Include="Dto\MonthlyLogReadDto.cs" />
+    <Compile Include="Dto\MonthlyLogUpdateDto.cs" />
     <Compile Include="Dto\UsersInsertDto.cs" />
     <Compile Include="Dto\UsersReadDto.cs" />
     <Compile Include="Dto\UsersUpdateDto.cs" />

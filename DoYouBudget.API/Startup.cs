@@ -27,26 +27,31 @@ namespace DoYouBudget.API
         /// <summary>
         /// Inject Service Collection
         /// </summary>
-        /// <param name="services"></param>
+        /// <param name="services"></param>fg
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DoYouBudgetContext>(option => option.UseSqlServer(
                     Configuration.GetConnectionString("DoYouBudgetConnection")));
 
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(builder =>
-                {
-                    builder.WithOrigins("http://localhost:3000")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-                });
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:3000")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                    });
             });
 
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IUsersRepo, UsersRepo>();
             services.AddScoped<ICategoryRepo, CategoryRepo>();
+            services.AddScoped<ICategoryTypeRepo, CategoryTypeRepo>();
+            services.AddScoped<IMonthlyLogRepo, MonthlyLogRepo>();
 
             var contact = new OpenApiContact()
             {
@@ -108,7 +113,7 @@ namespace DoYouBudget.API
 
             app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseCors();
+            app.UseCors("_myAllowSpecificOrigins");
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
