@@ -33,18 +33,7 @@ namespace DoYouBudget.API
             services.AddDbContext<DoYouBudgetContext>(option => option.UseSqlServer(
                     Configuration.GetConnectionString("DoYouBudgetConnection")));
 
-            //services.AddCors(options =>
-            //{
-            //    options.AddDefaultPolicy(builder =>
-            //    {
-            //        builder.WithOrigins("http://localhost:3000")
-            //        .AllowAnyHeader()
-            //        .AllowAnyMethod();
-            //    });
-            //});
-
             var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
