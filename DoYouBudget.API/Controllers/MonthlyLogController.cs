@@ -39,12 +39,29 @@ namespace DoYouBudget.API.Controllers
         /// <param name="month"></param>
         /// <returns></returns>
         [HttpGet("{userId}/{month}", Name = nameof(GetMonthlyLogsByUserId))]
-        public ActionResult<IEnumerable<MonthlyLogModel>> GetMonthlyLogsByUserId(int userId, int month)
+        public ActionResult<IEnumerable<MonthlyLogReadDto>> GetMonthlyLogsByUserId(int userId, int month)
         {
             IEnumerable<MonthlyLogModel> domain = _repository.GetMonthlyLogsByUserId(userId, month);
             if (domain == null)
                 return NotFound();
             IEnumerable<MonthlyLogReadDto> dto = _mapper.Map<IEnumerable<MonthlyLogReadDto>>(domain);
+            return Ok(dto);
+        }
+
+        // GET api/monthlyLog/{id}
+        /// <summary>
+        /// Get MonthlyLog by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult<MonthlyLogReadDto>> GetMonthlyLogById(int id)
+        {
+            MonthlyLogModel domain = await _repository.GetMonthlyLogById(id);
+            if (domain == null)
+                return NotFound();
+            MonthlyLogReadDto dto = _mapper.Map<MonthlyLogReadDto>(domain);
             return Ok(dto);
         }
 
@@ -55,7 +72,7 @@ namespace DoYouBudget.API.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<int>> InsertMonthlyLog(MonthlyLogInsertDto dto)
+        public async Task<ActionResult<int>> InsertMonthlyLogById(MonthlyLogInsertDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -67,6 +84,46 @@ namespace DoYouBudget.API.Controllers
             MonthlyLogReadDto readDto = _mapper.Map<MonthlyLogReadDto>(domain);
 
             return CreatedAtRoute(nameof(GetMonthlyLogsByUserId), new { userId = readDto.Id, month = 10 }, readDto);
+        }
+
+        // TODO: ADD ROUTE
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="updateDto"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateMonthlyLogById(MonthlyLogUpdateDto updateDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            MonthlyLogModel domain = await _repository.GetMonthlyLogById(updateDto.Id);
+            if (domain == null)
+                return NotFound();
+
+            _mapper.Map(updateDto, domain);
+            _repository.UpdateMonthlyLogById(domain);
+            bool isSuccessful = _repository.SaveChanges();
+            if (!isSuccessful)
+                return StatusCode(StatusCodes.Status500InternalServerError);
+
+            return NoContent();
+        }
+
+        // TODO: add route and swagger comment
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMonthlyLog(int id)
+        {
+            MonthlyLogModel domain = await _repository.GetMonthlyLogById(id);
+            if (domain == null)
+                return NotFound();
+
+            bool isSuccessful = _repository.DeleteMonthlyLog(domain);
+            if (!isSuccessful)
+                return StatusCode(StatusCodes.Status500InternalServerError);
+
+            return NoContent();
         }
     }
 }

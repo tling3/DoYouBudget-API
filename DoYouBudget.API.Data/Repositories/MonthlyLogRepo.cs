@@ -24,12 +24,29 @@ namespace DoYouBudget.API.Data.Repositories
             return domain;
         }
 
+        public async Task<MonthlyLogModel> GetMonthlyLogById(int id)
+        {
+            return await _context.MonthlyLog.FindAsync(id);
+        }
+
         public async Task<bool> InsertMonthlyLog(MonthlyLogModel domain)
         {
             if (domain == null)
                 throw new ArgumentNullException(nameof(domain));
 
             await _context.AddAsync(domain);
+            bool isSuccessful = SaveChanges();
+            return isSuccessful;
+        }
+
+        public void UpdateMonthlyLogById(MonthlyLogModel domain)
+        {
+            // intentionally left blank
+        }
+
+        public bool DeleteMonthlyLog(MonthlyLogModel domain)
+        {
+            _context.MonthlyLog.Remove(domain);
             bool isSuccessful = SaveChanges();
             return isSuccessful;
         }

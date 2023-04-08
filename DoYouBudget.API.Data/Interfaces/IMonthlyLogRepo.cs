@@ -8,5 +8,9 @@ namespace DoYouBudget.API.Data.Interfaces
     {
         IEnumerable<MonthlyLogModel> GetMonthlyLogsByUserId(int userId, int month);
         Task<bool> InsertMonthlyLog(MonthlyLogModel domain);
+        Task<MonthlyLogModel> GetMonthlyLogById(int id);
+        void UpdateMonthlyLogById(MonthlyLogModel domain);
+        bool DeleteMonthlyLog(MonthlyLogModel domain);
+        bool SaveChanges();
     }
 }
