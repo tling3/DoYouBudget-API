@@ -50,10 +50,14 @@
     <Compile Include="Context\DoYouBudgetContext.cs" />
     <Compile Include="Interfaces\ICategoryRepo.cs" />
     <Compile Include="Interfaces\ICategoryTypeRepo.cs" />
+    <Compile Include="Interfaces\IEventLocationRepo.cs" />
+    <Compile Include="Interfaces\IEventRepo.cs" />
     <Compile Include="Interfaces\IMonthlyLogRepo.cs" />
     <Compile Include="Interfaces\IUsersRepo.cs" />
     <Compile Include="Repositories\CategoryRepo.cs" />
     <Compile Include="Repositories\CategoryTypeRepo.cs" />
+    <Compile Include="Repositories\EventLocationRepo.cs" />
+    <Compile Include="Repositories\EventRepo.cs" />
     <Compile Include="Repositories\MonthlyLogRepo.cs" />
     <Compile Include="Repositories\UsersRepo.cs" />
   </ItemGroup>

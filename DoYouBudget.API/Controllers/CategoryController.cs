@@ -37,11 +37,12 @@ namespace DoYouBudget.API.Controllers
         /// Get all Categories
         /// </summary>
         /// <returns>All Category records</returns>
-        /// <returns></returns>
+        /// <response code="404">Categories not found</response>
+        /// <response code="200">Categories successfully found</response>
         [HttpGet]
-        public ActionResult<List<CategoryReadDto>> GetCategories()
+        public ActionResult<IEnumerable<CategoryReadDto>> GetCategories()
         {
-            List<CategoryReadDto> readDtos = _repository.GetCategories();
+            IEnumerable<CategoryReadDto> readDtos = _repository.GetCategories();
             if (readDtos == null)
                 return NotFound();
             return Ok(readDtos);
@@ -52,7 +53,9 @@ namespace DoYouBudget.API.Controllers
         /// Get Category record by Id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Category record</returns>
+        /// <response code="404">Not found</response>
+        /// <response code="200">Category record</response>
         [HttpGet("{id}", Name = nameof(GetCategoryById))]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<CategoryReadDto>> GetCategoryById(int id)
@@ -69,7 +72,9 @@ namespace DoYouBudget.API.Controllers
         /// Post category
         /// </summary>
         /// <param name="insertDto"></param>
-        /// <returns>category</returns>
+        /// <returns>Category record</returns>
+        /// <response code="500">Server error</response>
+        /// <response code="201">Category record</response>
         [HttpPost]
         public async Task<ActionResult<int>> InsertCategory(CategoryInsertDto insertDto)
         {
@@ -84,6 +89,7 @@ namespace DoYouBudget.API.Controllers
             return CreatedAtRoute(nameof(GetCategoryById), new { id = readDto.Id }, readDto);
         }
 
+        // PUT api/categories/
         /// <summary>
         /// Update category by id
         /// </summary>
@@ -94,7 +100,6 @@ namespace DoYouBudget.API.Controllers
         /// <response code="404">Item not found</response>
         /// <response code="500">Item failed to be updated</response>
         /// <response code="204">Item was successfully updated</response>
-        // PUT api/categories/
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> UpdateCategory(int id, CategoryUpdateDto updateDto)
@@ -115,6 +120,7 @@ namespace DoYouBudget.API.Controllers
             return NoContent();
         }
 
+        // DELETE api/categories/{id}
         /// <summary>
         /// Delete category by id
         /// </summary>
@@ -122,7 +128,6 @@ namespace DoYouBudget.API.Controllers
         /// <returns></returns>
         /// <response code="500">Item failed to be updated</response>
         /// <response code="204">Item was successfully updated</response>
-        // DELETE api/categories/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCategory(int id)
         {

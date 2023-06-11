@@ -14,5 +14,7 @@ namespace DoYouBudget.API.Data.Context
         public DbSet<CategoryModel> Category { get; set; }
         public DbSet<CategoryTypeModel> CategoryType { get; set; }
         public DbSet<MonthlyLogModel> MonthlyLog { get; set; }
+        public DbSet<EventModel> Events { get; set; }
+        public DbSet<EventLocationModel> EventLocation { get; set; }
     }
 }

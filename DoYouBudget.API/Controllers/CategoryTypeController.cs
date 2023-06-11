@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace DoYouBudget.API.Controllers
 {
     /// <summary>
-    /// 
+    /// Provides category type data
     /// </summary>
     [Route("api/categoryType")]
     [Produces("application/json")]
@@ -29,6 +29,7 @@ namespace DoYouBudget.API.Controllers
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
+        /// <param name="configuration"></param>
         public CategoryTypeController(ICategoryTypeRepo repository, IMapper mapper, IConfiguration configuration)
         {
             _repository = repository;
@@ -36,12 +37,15 @@ namespace DoYouBudget.API.Controllers
             _configuration = configuration;
         }
 
+        // GET api/categoryType
         /// <summary>
-        /// Get Category Types
+        /// Get all category types
         /// </summary>
-        /// <returns></returns>
+        /// <returns>All category types</returns>
+        /// <response code="404">Category type not found</response>
+        /// <response code="200">Category types successfully found</response>
         [HttpGet]
-        public async Task<ActionResult<List<CategoryTypeReadDto>>> GetCategoryType()
+        public async Task<ActionResult<IEnumerable<CategoryTypeReadDto>>> GetCategoryType()
         {
             IEnumerable<CategoryTypeModel> domain = await _repository.GetCategoryType();
             if (domain == null)
@@ -51,17 +55,7 @@ namespace DoYouBudget.API.Controllers
             return Ok(dto);
         }
 
-
-
-
-
-
-
-
-
-
-
-
+        // STORED PROCEDURE EXAMPLE - SAVE FOR STUDY PURPOSES
 
         /// <summary>
         /// Get Category Types
@@ -113,58 +107,58 @@ namespace DoYouBudget.API.Controllers
         //}
 
 
+        // STORED PROCEDURE EXAMPLE - SAVE FOR STUDY PURPOSES
 
-        [HttpPost]
-        public async Task<IActionResult> InsertCategoryType(CategoryTypeReadDto categoryTypeReadDto)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    SqlConnection conn = new SqlConnection();
-                    SqlCommand cmd = new SqlCommand();
+        /// <summary>
+        /// Insert category type record
+        /// </summary>
+        /// <param name="categoryTypeReadDto"></param>
+        /// <returns>Category type record</returns>
+        /// <response></response>
+        //[HttpPost]
+        //public async Task<IActionResult> InsertCategoryType(CategoryTypeReadDto categoryTypeReadDto)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            SqlConnection conn = new SqlConnection();
+        //            SqlCommand cmd = new SqlCommand();
 
-                    string connectionString = _configuration.GetConnectionString("DoYouBudgetConnection");
-                    conn.ConnectionString = connectionString;
-                    cmd.Connection = conn;
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = "CATEGORY_TYPE_INSERT";
+        //            string connectionString = _configuration.GetConnectionString("DoYouBudgetConnection");
+        //            conn.ConnectionString = connectionString;
+        //            cmd.Connection = conn;
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //            cmd.CommandText = "CATEGORY_TYPE_INSERT";
 
-                    SqlParameter parms = new SqlParameter();
-                    parms.ParameterName = "@Id";
-                    parms.SqlDbType = SqlDbType.Int;
-                    parms.Direction = ParameterDirection.Output;
+        //            SqlParameter parms = new SqlParameter();
+        //            parms.ParameterName = "@Id";
+        //            parms.SqlDbType = SqlDbType.Int;
+        //            parms.Direction = ParameterDirection.Output;
 
-                    cmd.Parameters.Add(parms);
-                    cmd.Parameters.AddWithValue("@Type", categoryTypeReadDto.Type);
-                    cmd.Parameters.AddWithValue("@CreatedDate", categoryTypeReadDto.CreatedDate);
-                    cmd.Parameters.AddWithValue("@ModifiedDate", categoryTypeReadDto.ModifiedDate);
-                    cmd.Parameters.AddWithValue("@ModifiedBy", categoryTypeReadDto.ModifiedBy);
+        //            cmd.Parameters.Add(parms);
+        //            cmd.Parameters.AddWithValue("@Type", categoryTypeReadDto.Type);
+        //            cmd.Parameters.AddWithValue("@CreatedDate", categoryTypeReadDto.CreatedDate);
+        //            cmd.Parameters.AddWithValue("@ModifiedDate", categoryTypeReadDto.ModifiedDate);
+        //            cmd.Parameters.AddWithValue("@ModifiedBy", categoryTypeReadDto.ModifiedBy);
 
-                    conn.Open();
-                    using (conn)
-                        cmd.ExecuteNonQuery();
-                    conn.Close();
-                    conn.Dispose();
+        //            conn.Open();
+        //            using (conn)
+        //                cmd.ExecuteNonQuery();
+        //            conn.Close();
+        //            conn.Dispose();
 
-                    int insertId = (int)cmd.Parameters["@Id"].Value;
+        //            int insertId = (int)cmd.Parameters["@Id"].Value;
 
-                    return NoContent();
-                }
-                else
-                    return BadRequest(ModelState);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-
-
-
-
-
-
+        //            return NoContent();
+        //        }
+        //        else
+        //            return BadRequest(ModelState);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
     }
 }

@@ -14,13 +14,23 @@ using System.Reflection;
 
 namespace DoYouBudget.API
 {
+    /// <summary>
+    /// Startup
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Startup Constructor
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Configuration Interface
+        /// </summary>
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -52,6 +62,8 @@ namespace DoYouBudget.API
             services.AddScoped<ICategoryRepo, CategoryRepo>();
             services.AddScoped<ICategoryTypeRepo, CategoryTypeRepo>();
             services.AddScoped<IMonthlyLogRepo, MonthlyLogRepo>();
+            services.AddScoped<IEventRepo, EventRepo>();
+            services.AddScoped<IEventLocationRepo, EventLocationRepo>();
 
             var contact = new OpenApiContact()
             {

@@ -7,7 +7,7 @@ namespace DoYouBudget.API.Data.Interfaces
 {
     public interface ICategoryRepo
     {
-        List<CategoryReadDto> GetCategories();
+        IEnumerable<CategoryReadDto> GetCategories();
         Task<CategoryModel> GetCategoryById(int id);
         Task<bool> InsertCategory(CategoryModel domain);
         void UpdateCategory(CategoryModel domain);

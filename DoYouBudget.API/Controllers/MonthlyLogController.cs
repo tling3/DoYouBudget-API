@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace DoYouBudget.API.Controllers
 {
     /// <summary>
-    /// 
+    /// Provide monthly logs data
     /// </summary>
     [Route("api/monthlyLogs")]
     [Produces("application/json")]
@@ -37,7 +37,9 @@ namespace DoYouBudget.API.Controllers
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="month"></param>
-        /// <returns></returns>
+        /// <returns>Monthly logs by user id</returns>
+        /// <response code="404">Monthly logs not found for user</response>
+        /// <response code="200">Monthly logs successfully found for user</response>
         [HttpGet("{userId}/{month}", Name = nameof(GetMonthlyLogsByUserId))]
         public ActionResult<IEnumerable<MonthlyLogReadDto>> GetMonthlyLogsByUserId(int userId, int month)
         {
@@ -53,7 +55,9 @@ namespace DoYouBudget.API.Controllers
         /// Get MonthlyLog by id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Monthly log record</returns>
+        /// <response code="404">Monthly log not found</response>
+        /// <response code="200">Monthly log record</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<MonthlyLogReadDto>> GetMonthlyLogById(int id)
@@ -70,9 +74,12 @@ namespace DoYouBudget.API.Controllers
         /// Insert MonthlyLog record
         /// </summary>
         /// <param name="dto"></param>
-        /// <returns></returns>
+        /// <returns>Monthly log record</returns>
+        /// <response code="400">Bad request</response>
+        /// <response code="500">Internal server error</response>
+        /// <response code="201">Monthly log record</response>
         [HttpPost]
-        public async Task<ActionResult<int>> InsertMonthlyLogById(MonthlyLogInsertDto dto)
+        public async Task<ActionResult> InsertMonthlyLogById(MonthlyLogInsertDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -86,12 +93,16 @@ namespace DoYouBudget.API.Controllers
             return CreatedAtRoute(nameof(GetMonthlyLogsByUserId), new { userId = readDto.Id, month = 10 }, readDto);
         }
 
-        // TODO: ADD ROUTE
+        // PUT api/monthlyLog/{id}
         /// <summary>
-        /// 
+        /// Update Monthly log by id
         /// </summary>
         /// <param name="updateDto"></param>
         /// <returns></returns>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Monthly log not found</response>
+        /// <response code="500">Internal server error</response>
+        /// <response code="204">Monthly log was successfully updated</response>
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateMonthlyLogById(MonthlyLogUpdateDto updateDto)
         {
@@ -111,7 +122,15 @@ namespace DoYouBudget.API.Controllers
             return NoContent();
         }
 
-        // TODO: add route and swagger comment
+        // DELETE api/monthlyLog/{id}
+        /// <summary>
+        /// Delete monthly log by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="404">Monthly log not found</response>
+        /// <response code="500">Internal server error</response>
+        /// <response code="204">Monthly log was successfully deleted</response>
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMonthlyLog(int id)
         {

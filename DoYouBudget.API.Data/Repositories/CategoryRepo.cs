@@ -19,7 +19,7 @@ namespace DoYouBudget.API.Data.Repositories
             _context = context;
         }
 
-        public List<CategoryReadDto> GetCategories()
+        public IEnumerable<CategoryReadDto> GetCategories()
         {
             List<CategoryReadDto> domain = _context.Category
                 .Join(
