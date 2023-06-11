@@ -48,8 +48,6 @@
     <Compile Include="Base\BaseDomain.cs" />
     <Compile Include="Domain\CategoryModel.cs" />
     <Compile Include="Domain\CategoryTypeModel.cs" />
-    <Compile Include="Domain\EventLocationModel.cs" />
-    <Compile Include="Domain\EventModel.cs" />
     <Compile Include="Domain\MonthlyLogModel.cs" />
     <Compile Include="Domain\UsersModel.cs" />
     <Compile Include="Dto\CategoryInsertDto.cs" />
@@ -58,10 +56,6 @@
     <Compile Include="Dto\CategoryTypeReadDto.cs" />
     <Compile Include="Dto\CategoryTypeUpdateDto.cs" />
     <Compile Include="Dto\CategoryUpdateDto.cs" />
-    <Compile Include="Dto\EventInsertDto.cs" />
-    <Compile Include="Dto\EventLocationReadDto.cs" />
-    <Compile Include="Dto\EventReadDto.cs" />
-    <Compile Include="Dto\EventUpdateDto.cs" />
     <Compile Include="Dto\MonthlyLogInsertDto.cs" />
     <Compile Include="Dto\MonthlyLogReadDto.cs" />
     <Compile Include="Dto\MonthlyLogUpdateDto.cs" />

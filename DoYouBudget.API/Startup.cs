@@ -62,8 +62,6 @@ namespace DoYouBudget.API
             services.AddScoped<ICategoryRepo, CategoryRepo>();
             services.AddScoped<ICategoryTypeRepo, CategoryTypeRepo>();
             services.AddScoped<IMonthlyLogRepo, MonthlyLogRepo>();
-            services.AddScoped<IEventRepo, EventRepo>();
-            services.AddScoped<IEventLocationRepo, EventLocationRepo>();
 
             var contact = new OpenApiContact()
             {
