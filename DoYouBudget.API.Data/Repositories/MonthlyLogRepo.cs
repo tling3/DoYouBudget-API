@@ -42,6 +42,9 @@ namespace DoYouBudget.API.Data.Repositories
             if (domain == null)
                 throw new ArgumentNullException(nameof(domain));
 
+            domain.Category.ModifiedBy = "TL";
+            domain.Category.PostDate = DateTime.Now;
+            domain.Category.UserId = 1;
             await _context.AddAsync(domain);
             bool isSuccessful = SaveChanges();
             return isSuccessful;

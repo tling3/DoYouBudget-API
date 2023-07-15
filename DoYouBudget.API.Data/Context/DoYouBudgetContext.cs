@@ -15,14 +15,5 @@ namespace DoYouBudget.API.Data.Context
         public DbSet<CategoryModel> Category { get; set; }
         public DbSet<CategoryTypeModel> CategoryType { get; set; }
         public DbSet<MonthlyLogModel> MonthlyLog { get; set; }
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<MonthlyLogModel>()
-        //        .HasOne(m => m.Category)
-        //        .WithOne(c => c.MonthlyLog)
-        //        .HasForeignKey<MonthlyLogModel>(m => m.CategoryId)
-        //        .IsRequired();
-        //}
     }
 }

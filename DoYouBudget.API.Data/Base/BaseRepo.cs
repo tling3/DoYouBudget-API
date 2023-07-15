@@ -32,7 +32,8 @@ namespace DoYouBudget.API.Data.Base
                     if (entry.State == EntityState.Added)
                         baseDomain.CreatedDate = DateTime.Now;
                 }
-                result = _context.SaveChanges() > 0;
+                int entriesToDb = _context.SaveChanges();
+                result = entriesToDb > 0;
             }
             return result;
         }

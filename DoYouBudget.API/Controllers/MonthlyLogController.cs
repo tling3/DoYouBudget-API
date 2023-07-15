@@ -90,7 +90,9 @@ namespace DoYouBudget.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             MonthlyLogReadDto readDto = _mapper.Map<MonthlyLogReadDto>(domain);
 
-            return CreatedAtRoute(nameof(GetMonthlyLogsByUserId), new { userId = readDto.Id, month = 10 }, readDto);
+            CreatedAtRouteResult result = CreatedAtRoute(nameof(GetMonthlyLogsByUserId), new { userId = readDto.Id, month = 10 }, readDto);
+            return result;
+
         }
 
         // PUT api/monthlyLog/{id}
