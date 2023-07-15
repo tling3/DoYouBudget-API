@@ -5,6 +5,7 @@ using DoYouBudget.API.Models.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DoYouBudget.API.Controllers
@@ -19,6 +20,7 @@ namespace DoYouBudget.API.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepo _repository;
+        private readonly ICategoryTypeRepo _typeRepo;
         private readonly IMapper _mapper;
 
         /// <summary>
@@ -26,9 +28,13 @@ namespace DoYouBudget.API.Controllers
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
-        public CategoryController(ICategoryRepo repository, IMapper mapper)
+        public CategoryController(
+            ICategoryRepo repository,
+            ICategoryTypeRepo typeRepo,
+            IMapper mapper)
         {
             _repository = repository;
+            _typeRepo = typeRepo;
             _mapper = mapper;
         }
 
@@ -61,9 +67,11 @@ namespace DoYouBudget.API.Controllers
         public async Task<ActionResult<CategoryReadDto>> GetCategoryById(int id)
         {
             CategoryModel domain = await _repository.GetCategoryById(id);
-            if (domain == null)
+            IEnumerable<CategoryTypeModel> typeDomain = await _typeRepo.GetCategoryType();
+            if (domain == null || typeDomain == null)
                 return NotFound();
             CategoryReadDto dto = _mapper.Map<CategoryReadDto>(domain);
+            dto.Type = typeDomain.Where(type => type.Id == dto.TypeId).Select(type => type.Type).FirstOrDefault();
             return Ok(dto);
         }
 

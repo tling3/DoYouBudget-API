@@ -17,19 +17,24 @@ namespace DoYouBudget.API.Data.Base
 
         public bool SaveChanges()
         {
+            var result = true;
             var entries = _context.ChangeTracker.Entries().Where(baseDomain =>
-                baseDomain is EntityEntry && (baseDomain.State == EntityState.Added || baseDomain.State == EntityState.Modified)
-            );
+                baseDomain is EntityEntry && (baseDomain.State == EntityState.Added ||
+                                            baseDomain.State == EntityState.Modified ||
+                                            baseDomain.State == EntityState.Deleted));
 
-            foreach (EntityEntry entry in entries)
+            if (entries.Any())
             {
-                BaseDomain baseDomain = ((BaseDomain)entry.Entity);
-                baseDomain.ModifiedDate = DateTime.Now;
-                if (entry.State == EntityState.Added)
-                    baseDomain.CreatedDate = DateTime.Now;
+                foreach (EntityEntry entry in entries)
+                {
+                    BaseDomain baseDomain = ((BaseDomain)entry.Entity);
+                    baseDomain.ModifiedDate = DateTime.Now;
+                    if (entry.State == EntityState.Added)
+                        baseDomain.CreatedDate = DateTime.Now;
+                }
+                result = _context.SaveChanges() > 0;
             }
-
-            return (_context.SaveChanges() > 0);
+            return result;
         }
     }
 }

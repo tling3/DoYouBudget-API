@@ -14,8 +14,10 @@ namespace DoYouBudget.API.Profiles
         /// </summary>
         public MonthlyLogProfile()
         {
-            CreateMap<MonthlyLogModel, MonthlyLogReadDto>();
-            CreateMap<MonthlyLogInsertDto, MonthlyLogModel>();
+            CreateMap<MonthlyLogModel, MonthlyLogReadDto>()
+                .ForMember(targ => targ.Category, opt => opt.MapFrom(src => src.Category.Category));
+            CreateMap<MonthlyLogInsertDto, MonthlyLogModel>()
+                .ForMember(targ => targ.CategoryId, opt => opt.MapFrom(src => src.CategoryId));
             CreateMap<MonthlyLogUpdateDto, MonthlyLogModel>();
         }
     }

@@ -12,5 +12,6 @@ namespace DoYouBudget.API.Models.Domain
         public int TypeId { get; set; }
         public DateTime PostDate { get; set; }
         public string ModifiedBy { get; set; }
+        //public MonthlyLogModel MonthlyLog { get; set; }
     }
 }
