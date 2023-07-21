@@ -14,8 +14,6 @@ namespace DoYouBudget.API.Models.Domain
         public int Month { get; set; }
         public string ModifiedBy { get; set; }
         public int CategoryId { get; set; }
-        [ForeignKey("CategoryId")]
-        public CategoryModel Category { get; set; }
     }
 
 }

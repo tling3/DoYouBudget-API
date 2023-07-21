@@ -19,21 +19,15 @@ namespace DoYouBudget.API.Data.Repositories
             _context = context;
         }
 
-        public IEnumerable<MonthlyLogModel> GetMonthlyLogsByUserId(int userId, int month)
+        public async Task<IEnumerable<MonthlyLogModel>> GetMonthlyLogsByUserId(int userId, int month)
         {
-            IEnumerable<MonthlyLogModel> domain = _context.MonthlyLog
-                .Where(item => item.UserId == userId && item.Month == month)
-                .Include("Category")
-                .ToList();
+            IEnumerable<MonthlyLogModel> domain = await _context.MonthlyLog.Where(item => item.UserId == userId && item.Month == month).ToListAsync();
             return domain;
         }
 
         public async Task<MonthlyLogModel> GetMonthlyLogById(int id)
         {
-            //var domain = await _context.MonthlyLog.FindAsync(id);
-            var domain = await _context.MonthlyLog
-                .Include("Category")
-                .FirstOrDefaultAsync(item => item.Id == id);
+            var domain = await _context.MonthlyLog.FindAsync(id);
             return domain;
         }
 
@@ -42,9 +36,6 @@ namespace DoYouBudget.API.Data.Repositories
             if (domain == null)
                 throw new ArgumentNullException(nameof(domain));
 
-            domain.Category.ModifiedBy = "TL";
-            domain.Category.PostDate = DateTime.Now;
-            domain.Category.UserId = 1;
             await _context.AddAsync(domain);
             bool isSuccessful = SaveChanges();
             return isSuccessful;

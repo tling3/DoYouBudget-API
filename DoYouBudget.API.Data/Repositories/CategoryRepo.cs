@@ -3,6 +3,7 @@ using DoYouBudget.API.Data.Context;
 using DoYouBudget.API.Data.Interfaces;
 using DoYouBudget.API.Models.Domain;
 using DoYouBudget.API.Models.Dto;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,27 +20,9 @@ namespace DoYouBudget.API.Data.Repositories
             _context = context;
         }
 
-        public IEnumerable<CategoryReadDto> GetCategories()
+        public async Task<IEnumerable<CategoryModel>> GetCategories()
         {
-            List<CategoryReadDto> domain = _context.Category
-                .Join(
-                    _context.CategoryType,
-                    category => category.TypeId,
-                    type => type.Id,
-                    (category, type) => new CategoryReadDto()
-                    {
-                        Id = category.Id,
-                        Type = type.Type,
-                        UserId = category.UserId,
-                        Category = category.Category,
-                        Budget = category.Budget,
-                        TypeId = category.TypeId,
-                        PostDate = category.PostDate,
-                        ModifiedBy = category.ModifiedBy,
-                        CreatedDate = category.CreatedDate,
-                        ModifiedDate = category.ModifiedDate
-                    }
-                ).ToList();
+            List<CategoryModel> domain = await _context.Category.ToListAsync();
             return domain;
         }
 
