@@ -2,6 +2,7 @@
 using DoYouBudget.API.Data.Context;
 using DoYouBudget.API.Data.Interfaces;
 using DoYouBudget.API.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,15 +19,16 @@ namespace DoYouBudget.API.Data.Repositories
             _context = context;
         }
 
-        public IEnumerable<MonthlyLogModel> GetMonthlyLogsByUserId(int userId, int month)
+        public async Task<IEnumerable<MonthlyLogModel>> GetMonthlyLogsByUserId(int userId, int month)
         {
-            IEnumerable<MonthlyLogModel> domain = _context.MonthlyLog.Where(item => item.UserId == userId && item.Month == month).ToList();
+            IEnumerable<MonthlyLogModel> domain = await _context.MonthlyLog.Where(item => item.UserId == userId && item.Month == month).ToListAsync();
             return domain;
         }
 
         public async Task<MonthlyLogModel> GetMonthlyLogById(int id)
         {
-            return await _context.MonthlyLog.FindAsync(id);
+            var domain = await _context.MonthlyLog.FindAsync(id);
+            return domain;
         }
 
         public async Task<bool> InsertMonthlyLog(MonthlyLogModel domain)

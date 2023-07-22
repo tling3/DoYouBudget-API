@@ -1,5 +1,6 @@
 ﻿using DoYouBudget.API.Models.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DoYouBudget.API.Data.Context
 {

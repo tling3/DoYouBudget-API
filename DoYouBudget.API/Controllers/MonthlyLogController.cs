@@ -5,6 +5,7 @@ using DoYouBudget.API.Models.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DoYouBudget.API.Controllers
@@ -18,6 +19,7 @@ namespace DoYouBudget.API.Controllers
     public class MonthlyLogController : ControllerBase
     {
         private readonly IMonthlyLogRepo _repository;
+        private readonly ICategoryRepo _categoryRepo;
         private readonly IMapper _mapper;
 
         /// <summary>
@@ -25,9 +27,13 @@ namespace DoYouBudget.API.Controllers
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
-        public MonthlyLogController(IMonthlyLogRepo repository, IMapper mapper)
+        public MonthlyLogController(
+            IMonthlyLogRepo repository,
+            ICategoryRepo categoryRepo,
+            IMapper mapper)
         {
             _repository = repository;
+            _categoryRepo = categoryRepo;
             _mapper = mapper;
         }
 
@@ -41,12 +47,35 @@ namespace DoYouBudget.API.Controllers
         /// <response code="404">Monthly logs not found for user</response>
         /// <response code="200">Monthly logs successfully found for user</response>
         [HttpGet("{userId}/{month}", Name = nameof(GetMonthlyLogsByUserId))]
-        public ActionResult<IEnumerable<MonthlyLogReadDto>> GetMonthlyLogsByUserId(int userId, int month)
+        public async Task<ActionResult<IEnumerable<MonthlyLogReadDto>>> GetMonthlyLogsByUserId(int userId, int month)
         {
-            IEnumerable<MonthlyLogModel> domain = _repository.GetMonthlyLogsByUserId(userId, month);
-            if (domain == null)
+            IEnumerable<MonthlyLogModel> domain = await _repository.GetMonthlyLogsByUserId(userId, month);
+            IEnumerable<CategoryModel> categoryDomain = await _categoryRepo.GetCategories();
+
+            if (domain == null || categoryDomain == null)
                 return NotFound();
-            IEnumerable<MonthlyLogReadDto> dto = _mapper.Map<IEnumerable<MonthlyLogReadDto>>(domain);
+
+            List<MonthlyLogReadDto> dto = domain
+                .Join(
+                    categoryDomain,
+                    domain => domain.CategoryId,
+                    category => category.Id,
+                    (domain, category) => new MonthlyLogReadDto()
+                    {
+                        Id = domain.Id,
+                        UserId = domain.UserId,
+                        Amount = domain.Amount,
+                        CategoryId = category.Id,
+                        Category = category.Category,
+                        TransactionDate = domain.TransactionDate,
+                        Comment = domain.Comment,
+                        Month = domain.Month,
+                        CreatedDate = domain.CreatedDate,
+                        ModifiedDate = domain.ModifiedDate,
+                        ModifiedBy = domain.ModifiedBy,
+                    }
+                ).ToList();
+
             return Ok(dto);
         }
 
@@ -63,9 +92,27 @@ namespace DoYouBudget.API.Controllers
         public async Task<ActionResult<MonthlyLogReadDto>> GetMonthlyLogById(int id)
         {
             MonthlyLogModel domain = await _repository.GetMonthlyLogById(id);
-            if (domain == null)
+            IEnumerable<CategoryModel> categories = await _categoryRepo.GetCategories();
+
+            if (domain == null || categories == null || categories.Count() <= 0)
                 return NotFound();
-            MonthlyLogReadDto dto = _mapper.Map<MonthlyLogReadDto>(domain);
+
+            string category = categories.Where(cat => domain.CategoryId == cat.Id).Select(cat => cat.Category).FirstOrDefault();
+
+            MonthlyLogReadDto dto = new MonthlyLogReadDto
+            {
+                Id = domain.Id,
+                UserId = domain.UserId,
+                Amount = domain.Amount,
+                CategoryId = domain.CategoryId,
+                Category = category,
+                TransactionDate = domain.TransactionDate,
+                Comment = domain.Comment,
+                Month = domain.Month,
+                CreatedDate = domain.CreatedDate,
+                ModifiedDate = domain.ModifiedDate,
+                ModifiedBy = domain.ModifiedBy,
+            };
             return Ok(dto);
         }
 
@@ -77,9 +124,9 @@ namespace DoYouBudget.API.Controllers
         /// <returns>Monthly log record</returns>
         /// <response code="400">Bad request</response>
         /// <response code="500">Internal server error</response>
-        /// <response code="201">Monthly log record</response>
+        /// <response code="201">Monthly log record created</response>
         [HttpPost]
-        public async Task<ActionResult> InsertMonthlyLogById(MonthlyLogInsertDto dto)
+        public async Task<ActionResult> InsertMonthlyLog(MonthlyLogInsertDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -89,8 +136,9 @@ namespace DoYouBudget.API.Controllers
             if (!isSuccessful)
                 return StatusCode(StatusCodes.Status500InternalServerError);
             MonthlyLogReadDto readDto = _mapper.Map<MonthlyLogReadDto>(domain);
-
-            return CreatedAtRoute(nameof(GetMonthlyLogsByUserId), new { userId = readDto.Id, month = 10 }, readDto);
+            readDto.Category = dto.Category;
+            CreatedAtRouteResult result = CreatedAtRoute(nameof(GetMonthlyLogsByUserId), new { userId = readDto.Id, month = 10 }, readDto);
+            return result;
         }
 
         // PUT api/monthlyLog/{id}
@@ -104,10 +152,13 @@ namespace DoYouBudget.API.Controllers
         /// <response code="500">Internal server error</response>
         /// <response code="204">Monthly log was successfully updated</response>
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateMonthlyLogById(MonthlyLogUpdateDto updateDto)
+        public async Task<ActionResult> UpdateMonthlyLogById(int id, MonthlyLogUpdateDto updateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
+
+            if (updateDto.Id == 0)
+                updateDto.Id = id;
 
             MonthlyLogModel domain = await _repository.GetMonthlyLogById(updateDto.Id);
             if (domain == null)

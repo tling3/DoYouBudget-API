@@ -6,7 +6,7 @@ namespace DoYouBudget.API.Data.Interfaces
 {
     public interface IMonthlyLogRepo
     {
-        IEnumerable<MonthlyLogModel> GetMonthlyLogsByUserId(int userId, int month);
+        Task<IEnumerable<MonthlyLogModel>> GetMonthlyLogsByUserId(int userId, int month);
         Task<bool> InsertMonthlyLog(MonthlyLogModel domain);
         Task<MonthlyLogModel> GetMonthlyLogById(int id);
         void UpdateMonthlyLogById(MonthlyLogModel domain);
