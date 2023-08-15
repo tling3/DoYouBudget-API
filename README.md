@@ -4,8 +4,6 @@ This is a RESTful .Net Core Web API developed for a Single Page Application (SPA
 
 ## DoYouBudget-API Technology
 
-Below is a list of the technologies that were involved in making this project. There also may be short descriptions for the role they played in the project.
-
 * .Net Core -  a developer platform for building many different types of applications.
 * Entity Framework (EF) Core - a ORM for .NET. It supports LINQ queries, change tracking, updates, and schema migrations.
 * Swagger - offers a systematic way of notating the interface of a RESTful service under the OpenAPI Specification.
