@@ -179,21 +179,64 @@ namespace DoYouBudget.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        /// <response code="200">Monthly log successfully deleted</response>
         /// <response code="404">Monthly log not found</response>
         /// <response code="500">Internal server error</response>
         /// <response code="204">Monthly log was successfully deleted</response>
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteMonthlyLog(int id)
+        public async Task<ActionResult<IEnumerable<MonthlyLogReadDto>>> DeleteMonthlyLog(int id)
         {
             MonthlyLogModel domain = await _repository.GetMonthlyLogById(id);
             if (domain == null)
                 return NotFound();
 
             bool isSuccessful = _repository.DeleteMonthlyLog(domain);
-            if (!isSuccessful)
-                return StatusCode(StatusCodes.Status500InternalServerError);
+            //if (!isSuccessful)
+            //    return StatusCode(StatusCodes.Status500InternalServerError);
 
-            return NoContent();
+
+
+
+
+
+            IEnumerable<MonthlyLogModel> domainTest = await _repository.GetMonthlyLogsByUserId(1, 10);
+            IEnumerable<CategoryModel> categoryDomainTest = await _categoryRepo.GetCategories();
+
+            if (domainTest == null || categoryDomainTest == null)
+                return new List<MonthlyLogReadDto>();
+
+            List<MonthlyLogReadDto> dto = domainTest
+                .Join(
+                    categoryDomainTest,
+                    domain => domain.CategoryId,
+                    category => category.Id,
+                    (domain, category) => new MonthlyLogReadDto()
+                    {
+                        Id = domain.Id,
+                        UserId = domain.UserId,
+                        Amount = domain.Amount,
+                        CategoryId = category.Id,
+                        Category = category.Category,
+                        TransactionDate = domain.TransactionDate,
+                        Comment = domain.Comment,
+                        Month = domain.Month,
+                        CreatedDate = domain.CreatedDate,
+                        ModifiedDate = domain.ModifiedDate,
+                        ModifiedBy = domain.ModifiedBy,
+                    }
+                ).ToList();
+
+
+
+
+
+
+
+
+
+            return Ok(dto);
         }
+
+
     }
 }

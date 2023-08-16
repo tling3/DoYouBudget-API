@@ -170,7 +170,10 @@ namespace DoYouBudget.API.Controllers
             if (domain == null)
                 return NotFound();
 
-            bool isSuccessful = _repository.DeleteCategory(domain);
+            domain.Deleted = true;
+            _repository.UpdateCategory(domain);
+            bool isSuccessful = _repository.SaveChanges();
+            //bool isSuccessful = _repository.DeleteCategory(domain);
             if (!isSuccessful)
                 return StatusCode(StatusCodes.Status500InternalServerError);
 

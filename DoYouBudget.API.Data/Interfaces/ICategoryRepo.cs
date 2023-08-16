@@ -10,7 +10,7 @@ namespace DoYouBudget.API.Data.Interfaces
         Task<CategoryModel> GetCategoryById(int id);
         Task<bool> InsertCategory(CategoryModel domain);
         void UpdateCategory(CategoryModel domain);
-        bool DeleteCategory(CategoryModel domain);
+        //bool DeleteCategory(CategoryModel domain);
         bool SaveChanges();
     }
 }

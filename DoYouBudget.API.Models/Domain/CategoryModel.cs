@@ -10,6 +10,7 @@ namespace DoYouBudget.API.Models.Domain
         public string Category { get; set; }
         public decimal Budget { get; set; }
         public int TypeId { get; set; }
+        public bool Deleted { get; set; }
         public DateTime PostDate { get; set; }
         public string ModifiedBy { get; set; }
     }

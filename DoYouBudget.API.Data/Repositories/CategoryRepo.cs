@@ -2,7 +2,6 @@
 using DoYouBudget.API.Data.Context;
 using DoYouBudget.API.Data.Interfaces;
 using DoYouBudget.API.Models.Domain;
-using DoYouBudget.API.Models.Dto;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -22,7 +21,7 @@ namespace DoYouBudget.API.Data.Repositories
 
         public async Task<IEnumerable<CategoryModel>> GetCategories()
         {
-            List<CategoryModel> domain = await _context.Category.ToListAsync();
+            List<CategoryModel> domain = await _context.Category.Where(d => d.Deleted != true ).ToListAsync();
             return domain;
         }
 
@@ -46,14 +45,17 @@ namespace DoYouBudget.API.Data.Repositories
             // intentionally left blank
         }
 
-        public bool DeleteCategory(CategoryModel domain)
-        {
-            if (domain == null)
-                throw new ArgumentNullException();
+        //public bool DeleteCategory(CategoryModel domain)
+        //{
+        //    if (domain == null)
+        //        throw new ArgumentNullException();
 
-            _context.Remove(domain);
-            bool isSuccessful = SaveChanges();
-            return isSuccessful;
-        }
+        //    domain.Deleted = true;
+        //    _reps
+
+        //    _context.Remove(domain);
+        //    bool isSuccessful = SaveChanges();
+        //    return isSuccessful;
+        //}
     }
 }
