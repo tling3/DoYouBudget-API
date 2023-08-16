@@ -5,16 +5,16 @@ using DoYouBudget.API.Models.Dto;
 namespace DoYouBudget.API.Profiles
 {
     /// <summary>
-    /// Users Mapper Profile
+    /// CategoryType Mapper Profile
     /// </summary>
-    public class UsersProfile : Profile
+    public class CategoryTypeProfile : Profile
     {
         /// <summary>
         /// Create Maps
         /// </summary>
-        public UsersProfile()
+        public CategoryTypeProfile()
         {
-            CreateMap<UsersModel, UsersReadDto>();
+            CreateMap<CategoryTypeModel, CategoryTypeReadDto>();
         }
     }
 }

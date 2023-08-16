@@ -5,8 +5,16 @@ using System.Linq;
 
 namespace DoYouBudget.API
 {
+    /// <summary>
+    /// JsonPatchDocumentFilter
+    /// </summary>
     public class JsonPatchDocumentFilter : IDocumentFilter
     {
+        /// <summary>
+        /// Apply
+        /// </summary>
+        /// <param name="swaggerDoc"></param>
+        /// <param name="context"></param>
         public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
         {
             var schemas = swaggerDoc.Components.Schemas.ToList();

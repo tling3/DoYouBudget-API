@@ -5,6 +5,7 @@ using DoYouBudget.API.Models.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DoYouBudget.API.Controllers
@@ -19,16 +20,22 @@ namespace DoYouBudget.API.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepo _repository;
+        private readonly ICategoryTypeRepo _typeRepo;
         private readonly IMapper _mapper;
 
         /// <summary>
         /// Injected repo and mapper
         /// </summary>
         /// <param name="repository"></param>
+        /// <param name="typeRepo"></param>
         /// <param name="mapper"></param>
-        public CategoryController(ICategoryRepo repository, IMapper mapper)
+        public CategoryController(
+            ICategoryRepo repository,
+            ICategoryTypeRepo typeRepo,
+            IMapper mapper)
         {
             _repository = repository;
+            _typeRepo = typeRepo;
             _mapper = mapper;
         }
 
@@ -37,14 +44,38 @@ namespace DoYouBudget.API.Controllers
         /// Get all Categories
         /// </summary>
         /// <returns>All Category records</returns>
-        /// <returns></returns>
+        /// <response code="404">Categories not found</response>
+        /// <response code="200">Categories successfully found</response>
         [HttpGet]
-        public ActionResult<List<CategoryReadDto>> GetCategories()
+        public async Task<ActionResult<IEnumerable<CategoryReadDto>>> GetCategories()
         {
-            List<CategoryReadDto> readDtos = _repository.GetCategories();
-            if (readDtos == null)
+            IEnumerable<CategoryModel> categoryDomains = await _repository.GetCategories();
+            IEnumerable<CategoryTypeModel> typeDomains = await _typeRepo.GetCategoryType();
+
+            if (categoryDomains == null || typeDomains == null)
                 return NotFound();
-            return Ok(readDtos);
+
+            List<CategoryReadDto> categoryDtos = categoryDomains
+                .Join(
+                    typeDomains,
+                    category => category.TypeId,
+                    type => type.Id,
+                    (category, type) => new CategoryReadDto()
+                    {
+                        Id = category.Id,
+                        Type = type.Type,
+                        UserId = category.UserId,
+                        Category = category.Category,
+                        Budget = category.Budget,
+                        TypeId = category.TypeId,
+                        PostDate = category.PostDate,
+                        ModifiedBy = category.ModifiedBy,
+                        CreatedDate = category.CreatedDate,
+                        ModifiedDate = category.ModifiedDate
+                    }
+                ).ToList();
+
+            return Ok(categoryDtos);
         }
 
         // GET api/categories/{id}
@@ -52,15 +83,19 @@ namespace DoYouBudget.API.Controllers
         /// Get Category record by Id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Category record</returns>
+        /// <response code="404">Not found</response>
+        /// <response code="200">Category record</response>
         [HttpGet("{id}", Name = nameof(GetCategoryById))]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<CategoryReadDto>> GetCategoryById(int id)
         {
             CategoryModel domain = await _repository.GetCategoryById(id);
-            if (domain == null)
+            IEnumerable<CategoryTypeModel> typeDomain = await _typeRepo.GetCategoryType();
+            if (domain == null || typeDomain == null)
                 return NotFound();
             CategoryReadDto dto = _mapper.Map<CategoryReadDto>(domain);
+            dto.Type = typeDomain.Where(type => type.Id == dto.TypeId).Select(type => type.Type).FirstOrDefault();
             return Ok(dto);
         }
 
@@ -69,7 +104,9 @@ namespace DoYouBudget.API.Controllers
         /// Post category
         /// </summary>
         /// <param name="insertDto"></param>
-        /// <returns>category</returns>
+        /// <returns>Category record</returns>
+        /// <response code="500">Server error</response>
+        /// <response code="201">Category record created</response>
         [HttpPost]
         public async Task<ActionResult<int>> InsertCategory(CategoryInsertDto insertDto)
         {
@@ -84,6 +121,7 @@ namespace DoYouBudget.API.Controllers
             return CreatedAtRoute(nameof(GetCategoryById), new { id = readDto.Id }, readDto);
         }
 
+        // PUT api/categories/
         /// <summary>
         /// Update category by id
         /// </summary>
@@ -94,13 +132,15 @@ namespace DoYouBudget.API.Controllers
         /// <response code="404">Item not found</response>
         /// <response code="500">Item failed to be updated</response>
         /// <response code="204">Item was successfully updated</response>
-        // PUT api/categories/
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> UpdateCategory(int id, CategoryUpdateDto updateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
+
+            if (updateDto.Id == 0)
+                updateDto.Id = id;
 
             CategoryModel domain = await _repository.GetCategoryById(id);
             if (domain == null)
@@ -115,14 +155,14 @@ namespace DoYouBudget.API.Controllers
             return NoContent();
         }
 
+        // DELETE api/categories/{id}
         /// <summary>
         /// Delete category by id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        /// <response code="500">Item failed to be updated</response>
-        /// <response code="204">Item was successfully updated</response>
-        // DELETE api/categories/{id}
+        /// <response code="500">Item failed to be deleted</response>
+        /// <response code="204">Item was deleted</response>
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCategory(int id)
         {

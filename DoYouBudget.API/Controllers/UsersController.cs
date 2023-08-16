@@ -30,7 +30,7 @@ namespace DoYouBudget.API.Controllers
             _mapper = mapper;
         }
 
-        // GET ALL api/attendance
+        // GET ALL api/users
         /// <summary>
         /// Get all users
         /// </summary>
@@ -48,6 +48,3 @@ namespace DoYouBudget.API.Controllers
         }
     }
 }
-
-
-

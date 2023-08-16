@@ -1,5 +1,6 @@
 ﻿using DoYouBudget.API.Models.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DoYouBudget.API.Data.Context
 {
@@ -13,5 +14,6 @@ namespace DoYouBudget.API.Data.Context
         public DbSet<UsersModel> Users { get; set; }
         public DbSet<CategoryModel> Category { get; set; }
         public DbSet<CategoryTypeModel> CategoryType { get; set; }
+        public DbSet<MonthlyLogModel> MonthlyLog { get; set; }
     }
 }

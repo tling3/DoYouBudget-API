@@ -10,7 +10,7 @@ namespace DoYouBudget.API.Profiles
     public class CategoriesProfile : Profile
     {
         /// <summary>
-        /// Create Maps in constructor
+        /// Create Maps
         /// </summary>
         public CategoriesProfile()
         {
