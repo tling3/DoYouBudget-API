@@ -38,9 +38,9 @@ namespace DoYouBudget.API.Controllers
         /// <response code="404">Users not found</response>
         /// <response code="200">Users successfully found</response>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UsersReadDto>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UsersReadDto>>> GetUsersAsync()
         {
-            IEnumerable<UsersModel> domains = await _repository.GetUsers();
+            IEnumerable<UsersModel> domains = await _repository.GetUsersAsync();
             if (domains == null)
                 return NotFound();
             IEnumerable<UsersReadDto> dtos = _mapper.Map<IEnumerable<UsersReadDto>>(domains);

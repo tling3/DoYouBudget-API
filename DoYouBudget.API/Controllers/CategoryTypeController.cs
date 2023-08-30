@@ -42,9 +42,9 @@ namespace DoYouBudget.API.Controllers
         /// <response code="404">Category type not found</response>
         /// <response code="200">Category types successfully found</response>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryTypeReadDto>>> GetCategoryType()
+        public async Task<ActionResult<IEnumerable<CategoryTypeReadDto>>> GetCategoryTypeAsync()
         {
-            IEnumerable<CategoryTypeModel> domain = await _repository.GetCategoryType();
+            IEnumerable<CategoryTypeModel> domain = await _repository.GetCategoryTypeAsync();
             if (domain == null)
                 return NotFound();
 

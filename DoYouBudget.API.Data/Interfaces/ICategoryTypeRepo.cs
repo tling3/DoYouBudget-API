@@ -6,6 +6,6 @@ namespace DoYouBudget.API.Data.Interfaces
 {
     public interface ICategoryTypeRepo
     {
-        Task<IEnumerable<CategoryTypeModel>> GetCategoryType();
+        Task<IEnumerable<CategoryTypeModel>> GetCategoryTypeAsync();
     }
 }

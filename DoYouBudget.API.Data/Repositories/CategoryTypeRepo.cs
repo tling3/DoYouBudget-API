@@ -16,7 +16,7 @@ namespace DoYouBudget.API.Data.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<CategoryTypeModel>> GetCategoryType()
+        public async Task<IEnumerable<CategoryTypeModel>> GetCategoryTypeAsync()
         {
             return await _context.CategoryType.ToListAsync();
         }

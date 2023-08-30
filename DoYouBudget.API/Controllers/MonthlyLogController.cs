@@ -46,11 +46,11 @@ namespace DoYouBudget.API.Controllers
         /// <returns>Monthly logs by user id</returns>
         /// <response code="404">Monthly logs not found for user</response>
         /// <response code="200">Monthly logs successfully found for user</response>
-        [HttpGet("{userId}/{month}", Name = nameof(GetMonthlyLogsByUserId))]
-        public async Task<ActionResult<IEnumerable<MonthlyLogReadDto>>> GetMonthlyLogsByUserId(int userId, int month)
+        [HttpGet("{userId}/{month}", Name = nameof(GetMonthlyLogsByUserIdAsync))]
+        public async Task<ActionResult<IEnumerable<MonthlyLogReadDto>>> GetMonthlyLogsByUserIdAsync(int userId, int month)
         {
-            IEnumerable<MonthlyLogModel> domain = await _repository.GetMonthlyLogsByUserId(userId, month);
-            IEnumerable<CategoryModel> categoryDomain = await _categoryRepo.GetCategories();
+            IEnumerable<MonthlyLogModel> domain = await _repository.GetMonthlyLogsByUserIdAsync(userId, month);
+            IEnumerable<CategoryModel> categoryDomain = await _categoryRepo.GetCategoriesAsync();
 
             if (domain == null || categoryDomain == null)
                 return NotFound();
@@ -89,10 +89,10 @@ namespace DoYouBudget.API.Controllers
         /// <response code="200">Monthly log record</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<MonthlyLogReadDto>> GetMonthlyLogById(int id)
+        public async Task<ActionResult<MonthlyLogReadDto>> GetMonthlyLogByIdAsync(int id)
         {
-            MonthlyLogModel domain = await _repository.GetMonthlyLogById(id);
-            IEnumerable<CategoryModel> categories = await _categoryRepo.GetCategories();
+            MonthlyLogModel domain = await _repository.GetMonthlyLogByIdAsync(id);
+            IEnumerable<CategoryModel> categories = await _categoryRepo.GetCategoriesAsync();
 
             if (domain == null || categories == null || categories.Count() <= 0)
                 return NotFound();
@@ -126,18 +126,18 @@ namespace DoYouBudget.API.Controllers
         /// <response code="500">Internal server error</response>
         /// <response code="201">Monthly log record created</response>
         [HttpPost]
-        public async Task<ActionResult> InsertMonthlyLog(MonthlyLogInsertDto dto)
+        public async Task<IActionResult> InsertMonthlyLogAsync(MonthlyLogInsertDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
             MonthlyLogModel domain = _mapper.Map<MonthlyLogModel>(dto);
-            bool isSuccessful = await _repository.InsertMonthlyLog(domain);
+            bool isSuccessful = await _repository.InsertMonthlyLogAsync(domain);
             if (!isSuccessful)
                 return StatusCode(StatusCodes.Status500InternalServerError);
             MonthlyLogReadDto readDto = _mapper.Map<MonthlyLogReadDto>(domain);
             readDto.Category = dto.Category;
-            CreatedAtRouteResult result = CreatedAtRoute(nameof(GetMonthlyLogsByUserId), new { userId = readDto.Id, month = 10 }, readDto);
+            CreatedAtRouteResult result = CreatedAtRoute(nameof(GetMonthlyLogsByUserIdAsync), new { userId = readDto.Id, month = 10 }, readDto);
             return result;
         }
 
@@ -152,7 +152,7 @@ namespace DoYouBudget.API.Controllers
         /// <response code="500">Internal server error</response>
         /// <response code="204">Monthly log was successfully updated</response>
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateMonthlyLogById(int id, MonthlyLogUpdateDto updateDto)
+        public async Task<IActionResult> UpdateMonthlyLogByIdAsync(int id, MonthlyLogUpdateDto updateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -160,7 +160,7 @@ namespace DoYouBudget.API.Controllers
             if (updateDto.Id == 0)
                 updateDto.Id = id;
 
-            MonthlyLogModel domain = await _repository.GetMonthlyLogById(updateDto.Id);
+            MonthlyLogModel domain = await _repository.GetMonthlyLogByIdAsync(updateDto.Id);
             if (domain == null)
                 return NotFound();
 
@@ -183,9 +183,9 @@ namespace DoYouBudget.API.Controllers
         /// <response code="500">Internal server error</response>
         /// <response code="204">Monthly log was successfully deleted</response>
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteMonthlyLog(int id)
+        public async Task<IActionResult> DeleteMonthlyLogAsync(int id)
         {
-            MonthlyLogModel domain = await _repository.GetMonthlyLogById(id);
+            MonthlyLogModel domain = await _repository.GetMonthlyLogByIdAsync(id);
             if (domain == null)
                 return NotFound();
 

@@ -6,6 +6,6 @@ namespace DoYouBudget.API.Data.Interfaces
 {
     public interface IUsersRepo
     {
-        Task<IEnumerable<UsersModel>> GetUsers();
+        Task<IEnumerable<UsersModel>> GetUsersAsync();
     }
 }
