@@ -19,19 +19,19 @@ namespace DoYouBudget.API.Data.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<MonthlyLogModel>> GetMonthlyLogsByUserId(int userId, int month)
+        public async Task<IEnumerable<MonthlyLogModel>> GetMonthlyLogsByUserIdAsync(int userId, int month)
         {
             IEnumerable<MonthlyLogModel> domain = await _context.MonthlyLog.Where(item => item.UserId == userId && item.Month == month).ToListAsync();
             return domain;
         }
 
-        public async Task<MonthlyLogModel> GetMonthlyLogById(int id)
+        public async Task<MonthlyLogModel> GetMonthlyLogByIdAsync(int id)
         {
             var domain = await _context.MonthlyLog.FindAsync(id);
             return domain;
         }
 
-        public async Task<bool> InsertMonthlyLog(MonthlyLogModel domain)
+        public async Task<bool> InsertMonthlyLogAsync(MonthlyLogModel domain)
         {
             if (domain == null)
                 throw new ArgumentNullException(nameof(domain));

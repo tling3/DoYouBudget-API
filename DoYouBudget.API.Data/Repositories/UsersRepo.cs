@@ -17,7 +17,7 @@ namespace DoYouBudget.API.Data.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<UsersModel>> GetUsers()
+        public async Task<IEnumerable<UsersModel>> GetUsersAsync()
         {
             return await _context.Users.ToListAsync();
         }

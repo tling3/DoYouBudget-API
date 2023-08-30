@@ -20,19 +20,19 @@ namespace DoYouBudget.API.Data.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<CategoryModel>> GetCategories()
+        public async Task<IEnumerable<CategoryModel>> GetCategoriesAsync()
         {
             List<CategoryModel> domain = await _context.Category.ToListAsync();
             return domain;
         }
 
-        public async Task<CategoryModel> GetCategoryById(int id)
+        public async Task<CategoryModel> GetCategoryByIdAsync(int id)
         {
             CategoryModel domain = await _context.Category.FindAsync(id);
             return domain;
         }
 
-        public async Task<bool> InsertCategory(CategoryModel domain)
+        public async Task<bool> InsertCategoryAsync(CategoryModel domain)
         {
             if (domain == null)
                 throw new ArgumentNullException(nameof(domain));
